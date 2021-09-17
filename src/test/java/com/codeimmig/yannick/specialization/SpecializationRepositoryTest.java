@@ -33,7 +33,7 @@ public class SpecializationRepositoryTest {
 	@Test
 	@Order(1)
 	public void testSpecCreate() {
-		Specialization spec=new Specialization(null, "CRDLS", "Cardiologists", "They’re experts on the heart and blood vessels.");
+		Specialization spec=new Specialization(null, "DRMTGS", "Dermatologists", "Have problems with your skin, hair, nails? Do you have moles, scars.");
 		spec=repo.save(spec);
 		assertNotEquals(spec.getId(), "spec is not created");
 	}

@@ -19,13 +19,14 @@ public class Specialization {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="spec_id_col")
+	
+	@Column(name="spec_id_col", length=10, nullable=false, unique=true)
 	private Long id;
-	@Column(name="spec_code_col")
+	@Column(name="spec_code_col", length = 15, nullable = false)
 	private String specCode;
-	@Column(name="spec_name_col")
+	@Column(name="spec_name_col", nullable = false)
 	private String specName;
-	@Column(name="spec_note_col")
+	@Column(name="spec_note_col", nullable =false)
 	private String specNote;
 	
 
