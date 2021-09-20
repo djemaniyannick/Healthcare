@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.codeimmig.yannick.exception.SpecializationNotFoundException;
 import com.codeimmig.yannick.model.Specialization;
 import com.codeimmig.yannick.service.ISpecializationService;
 import org.slf4j.Logger;
@@ -30,9 +31,10 @@ public class SpecializationController {
 	 *1. Display All specialization
 	 */
 	@GetMapping("/all")
-	public String viewAll(Model model) {
+	public String viewAll(Model model,@RequestParam(value="message", required = false) String message) {
 		List<Specialization> list=service.getAllSpecialization();
 		model.addAttribute("list", list);
+		model.addAttribute("message",message);
 		return "specializationData";
 	}
 	/**
@@ -40,8 +42,15 @@ public class SpecializationController {
 	 */
 	@GetMapping("/delete")
 	public String deleteData(@RequestParam Long id, RedirectAttributes attributes) {
-		service.removeSpecialization(id);
-		attributes.addAttribute("message", "Record"+id+"is removed");
+		try {
+			service.removeSpecialization(id);
+			attributes.addAttribute("message", "Record"+id+"is removed");
+			
+		} catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+			attributes.addAttribute("message", e.getMessage());
+		}
+			
 		return "redirect:all";
 	}
 	
