@@ -1,6 +1,7 @@
 package com.codeimmig.yannick.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.codeimmig.yannick.model.Specialization;
 
@@ -13,4 +14,6 @@ public interface ISpecializationService {
 	
 	public boolean isSpecCodeExist(String specCode); 
 	public boolean isSpecCodeExistForEdit(String specCode,Long id);
+	
+	Map<Long, String> getSpecIdAndName();
 }

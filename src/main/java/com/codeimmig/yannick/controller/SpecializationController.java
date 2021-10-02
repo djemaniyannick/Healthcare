@@ -23,6 +23,7 @@ import com.codeimmig.yannick.view.SpecializationExcelView;
 @Controller
 @RequestMapping("/spec")
 public class SpecializationController {
+	
 	@Autowired
 	private ISpecializationService service;
 	//private static final Logger LOG=org.slf4j.LoggerFactory.getLogger(Specialization.class);
@@ -115,7 +116,12 @@ public class SpecializationController {
 
 		return page;
 	}
-	
+	/**
+	 7. update specialization
+	 * @param specialization
+	 * @param attributes
+	 * @return
+	 */
 	@PostMapping("/update")
 	public String updateSpec(@ModelAttribute Specialization specialization, RedirectAttributes attributes) {
 		service.updateSpecialization(specialization);
@@ -124,7 +130,7 @@ public class SpecializationController {
 	}
 
 	/**
-	 * 7. Read code and check with service
+	 * 8. Read code and check with service
 	 *    Return message back to UI 
 	 */
 	@GetMapping("/checkCode")
