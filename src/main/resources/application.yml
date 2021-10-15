@@ -3,11 +3,21 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: developpeur2020
     url: jdbc:mysql://localhost:3306/health
     username: root
+    password: developpeur2020
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: create
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: abenapaul237@gmail.com
+    password: cameroun237
+    properties:
+     mail:
+      smtp:
+       starttls:
+         enable: true

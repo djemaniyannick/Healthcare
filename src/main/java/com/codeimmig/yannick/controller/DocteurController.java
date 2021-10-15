@@ -3,6 +3,7 @@ package com.codeimmig.yannick.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,43 +17,71 @@ import com.codeimmig.yannick.exception.DoctorNotFoundException;
 import com.codeimmig.yannick.model.Doctor;
 import com.codeimmig.yannick.service.IDoctorService;
 import com.codeimmig.yannick.service.ISpecializationService;
+import com.codeimmig.yannick.util.MyMailUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @RequestMapping("/doctor")
 @Controller
 public class DocteurController {
 	@Autowired
 	private IDoctorService service;
-	
+
 	@Autowired
 	private ISpecializationService specializationService;
+
+	@Autowired
+	private MyMailUtil mailUtil;
+
 	/**
 	 * 1-
 	 * @return
 	 */
-	
+
 	private void createDynamicUi(Model model) {
 		model.addAttribute("specializations",specializationService.getSpecIdAndName());
 	}
-	
+
 	@GetMapping("/register")
 	public String displayRegister(@RequestParam(value = "message", required = false) String message, Model model) {
 		model.addAttribute("message", message);
 		createDynamicUi(model);
 		return "DoctorRegister";
 	}
-	
+
 	/**
 	 *2- method to save doctor
 	 * @param doctor
 	 * @param model
 	 * @return
 	 */
+	//2. save on submit
 	@PostMapping("/save")
-	public String saveDoctor(@ModelAttribute Doctor doctor, Model model) {
-		Long id=service.saveDoctor(doctor);
-		String message ="Record ("+id+") is created";
-		model.addAttribute("message", message);
-		return "DoctorRegister";	
+	public String save(
+			@ModelAttribute Doctor doctor,
+			RedirectAttributes attributes
+			)
+	{
+		Long id = service.saveDoctor(doctor);
+		String message = "Doctor ("+id+") is created";
+		attributes.addAttribute("message", message);
+		log.info("Before enter to send pdf method");
+		if(id!=null) {
+			new Thread(new Runnable() {
+				public void run() {
+					log.debug("id: {}",id);
+					mailUtil.send(
+							doctor.getEmail(), 
+							"SUCCESS", 
+							message,
+							new ClassPathResource("/static/myres/healthcare.pdf"));
+				}
+			}).start();
+		}
+		log.info("after finish sendding mail(pdf)");
+		return "redirect:register";
 	}
 	/**
 	 * 3-display all doctor
@@ -78,14 +107,14 @@ public class DocteurController {
 		try {
 			service.removeDoctor(id);
 			attributes.addAttribute("message", "Record "+id+" is removed");
-			
+
 		} catch (DoctorNotFoundException e) {
 			e.printStackTrace();
 			attributes.addAttribute("message",e.getMessage());
 		}
-		 return "redirect:all";
+		return "redirect:all";
 	}
-	
+
 	/**
 	 5-Fetch Data into Edit page
 	 *  End user clicks on Link, may enter ID manually.
@@ -101,18 +130,18 @@ public class DocteurController {
 	 * @param attributes
 	 * @return
 	 */
-	
-	
+
+
 	@GetMapping("/edit")   
 	public String  editDoctor(Model model, @RequestParam("id") Long id,RedirectAttributes attributes) {
 		String page=null;
-		
+
 		try {
 			Doctor doc=service.getOneDoctor(id);
 			model.addAttribute("doctor", doc);
 			createDynamicUi(model);
 			page="DoctorEdit";
-			
+
 		} catch (DoctorNotFoundException e) {
 			e.printStackTrace();
 			model.addAttribute("message", e.getMessage());
@@ -120,19 +149,19 @@ public class DocteurController {
 		}
 		return page;
 	}
-	
+
 	/**
 	 * 
 	 * @param doctor
 	 * @param attributes
 	 * @return
 	 */
-	
+
 	@PostMapping("/update")
 	public String doUpdate(@ModelAttribute Doctor doctor, RedirectAttributes attributes) {
 		service.updateDoctor(doctor);
 		attributes.addAttribute("message", "Record ("+doctor.getId()+") is updated");
 		return "redirect:all";
 	}
-	
+
 }
