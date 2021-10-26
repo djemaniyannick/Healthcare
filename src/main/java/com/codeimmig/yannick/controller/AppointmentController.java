@@ -83,6 +83,41 @@ public class AppointmentController {
 		}
 		return "redirect:all";
 	}
-	
+	/**
+	 * 
+	 * @param model
+	 * @param id
+	 * @param attributes
+	 * @return
+	 */
+	@GetMapping("/edit")   
+	public String  editAppointment(Model model, @RequestParam("id") Long id,RedirectAttributes attributes) {
+		String page=null;
+
+		try {
+			Appointment app=service.getOneAppointment(id);
+			model.addAttribute("appointment", app);
+			commonUi(model);
+			page="AppointmentEdit";
+
+		} catch (DoctorNotFoundException e) {
+			e.printStackTrace();
+			model.addAttribute("message", e.getMessage());
+			page="redirect:all";
+		}
+		return page;
+	}
+	/**
+	 * 
+	 * @param appointment
+	 * @param attributes
+	 * @return
+	 */
+	@PostMapping("/update")
+	public String doUpdate(@ModelAttribute Appointment appointment, RedirectAttributes attributes) {
+		service.updateAppointment(appointment);
+		attributes.addAttribute("message", "Record ("+appointment.getId()+") is updated");
+		return "redirect:all";
+	}
 	
 }
