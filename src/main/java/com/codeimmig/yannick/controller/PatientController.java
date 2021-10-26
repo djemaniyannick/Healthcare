@@ -28,6 +28,7 @@ public class PatientController {
 		return "patientRegister";
 	}
 
+	
 	@PostMapping("/save")
 	public String savePatient(Model model, @ModelAttribute Patient patient) {
 		Long id=service.savePatient(patient);
@@ -37,6 +38,7 @@ public class PatientController {
 		return "patientRegister";
 	}
 	
+	
 	@GetMapping("/all")
 	public String getAllPatient(@RequestParam(value = "message", required = false) String message, Model model) {
 		List<Patient> list=service.getAllPatient();
@@ -45,6 +47,7 @@ public class PatientController {
 		return "patientData";	
 	}
 
+	
 	@GetMapping("/delete")
 	public String deletePatient(@RequestParam("id")Long id, RedirectAttributes redirectAttributes) {
 		try {
@@ -56,6 +59,7 @@ public class PatientController {
 		}
 		return "redirect:all";
 	}
+	 
 	
 	@GetMapping("/edit")
 	public String editPatient(Model model , @RequestParam("id") Long id, RedirectAttributes attributes) {

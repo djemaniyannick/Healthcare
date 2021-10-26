@@ -7,49 +7,38 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-	
 </head>
 <body>
 	<div class="container">
 		<div class="card">
 			<div class="card-header bg-primary text-center text-white">
-				<h3>Doctor Data</h3>
+				<h3>Specialization Data</h3>
 			</div>
 			<div class="card-body">
-				<a th:href="@{/doctor/excel}" class="btn btn-success"> Excel <i
-					class="fa fa-file-excel-o" aria-hidden="true"></i>
-				</a>
+			<a th:href="@{/appointment/excel}" class="btn btn-success"> Excel <i
+				class="fa fa-file-excel-o" aria-hidden="true"></i>
+			</a>
 				<table class="table table-hover">
 					<tr class="bg-info text-white">
-					    <th>PHOTO</th>
-						<th>NAME</th>
-						<th>EMAIL</th>
-						<th>SPECIALIZATION</th>
-						<th>MOBILE</th>
-						<th>NOTE</th>
-						<th>ADDRESS</th>
-						<th>OPERATION</th>
+						<th>DATA</th>
+						<th>DOCTOR</th>
+						<th>STATUS</th>
 					</tr>
 					<tr th:each="ob:${list}">
-						<td><img th:src="${ob.photoLoc}" width="50" height="70" /></td>
-						<td>[[${ob.firstName + ' ' +ob.lastName}]]</td>
-						<td th:text="${ob.email}"></td>
-						<td th:text="${ob.specialization.specName}"></td>
-						<td th:text="${ob.mobile}"></td>
-						<td th:text="${ob.note}"></td>
-						<td th:text="${ob.address}"></td>
+						<td th:text="${ob.date}"></td>
+						<td th:text="${ob.specName}"></td>
+						<td th:text="${ob.specNote}"></td>
 						<td>
 							<div class="row">
 								<div class="col-6">
-									<a th:href="@{/doctor/delete(id=${ob.id})}"
+									<a th:href="@{/spec/delete(id=${ob.id})}"
 										class="btn btn-danger">DELETE <i class="fa fa-trash-o"
 										aria-hidden="true"></i>
 									</a>
 								</div>
 								<div class="col-6">
-									<a th:href="@{/doctor/edit(id=${ob.id})}"
-										class="btn btn-warning">EDIT <i
-										class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									<a th:href="@{/spec/edit(id=${ob.id})}" class="btn btn-warning">EDIT
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 									</a>
 								</div>
 							</div>

@@ -28,8 +28,7 @@ public class PatientServiceImpl implements IPatientService {
 
 	@Override
 	public void removePatient(Long id) {
-		repo.delete(getOnePatient(id));
-		
+		repo.delete(getOnePatient(id));	
 	}
 
 	@Override
@@ -46,7 +45,6 @@ public class PatientServiceImpl implements IPatientService {
 	@Override
 	public void updatePatient(Patient pat) {
 		repo.save(pat);
-		
 	}
 
 }
