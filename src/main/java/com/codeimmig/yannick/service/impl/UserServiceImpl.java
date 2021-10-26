@@ -3,11 +3,13 @@ package com.codeimmig.yannick.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.codeimmig.yannick.model.User;
 import com.codeimmig.yannick.repo.UserRepository;
 import com.codeimmig.yannick.service.IUserService;
 
+@Service
 public class UserServiceImpl  implements IUserService{
 	@Autowired UserRepository repo;
 

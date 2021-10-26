@@ -8,6 +8,6 @@ import com.codeimmig.yannick.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-	Long saveUser(User user);
+	
 	Optional<User> findByUsername(String username);
 }
